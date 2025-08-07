@@ -14,7 +14,6 @@ with open(INPUT_JSON_PATH, "r") as f:
 depth = inner_well_json["wells"]["A1"]["depth"]
 data = np.loadtxt(CSV_PATH, delimiter=",", skiprows=9, usecols=(2, 5))
 
-
 def generate_frusta(data: np.ndarray, geoID: str = "conicalWell") -> List[Dict]:
     frusta_data = []
 
@@ -81,6 +80,11 @@ def generate_frusta(data: np.ndarray, geoID: str = "conicalWell") -> List[Dict]:
 
 new_frusta_data = generate_frusta(data, geoID)
 
+for well_name, well_schema in inner_well_json["wells"].items():
+    well_schema["geometryDefinitionId"] = geoID
+
+
+#add IWG def 
 inner_well_json["innerLabwareGeometry"] = {
     geoID: {
         "sections": new_frusta_data
